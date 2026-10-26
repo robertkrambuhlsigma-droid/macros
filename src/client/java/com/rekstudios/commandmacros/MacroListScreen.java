@@ -34,7 +34,7 @@ public final class MacroListScreen extends Screen {
 
         for (int index = firstIndex; index < lastIndex; index++) {
             final MacroDefinition macro = CommandMacrosClient.MACROS.get(index);
-            int y = rowTop + (index - firstIndex) * 46;
+            int y = rowTop + (index - firstIndex) * 30;
 
             this.addRenderableWidget(Button.builder(Component.literal("Run"), button -> {
                 CommandMacrosClient.runMacro(Minecraft.getInstance(), macro);
@@ -82,11 +82,11 @@ public final class MacroListScreen extends Screen {
             int left = this.width / 2 - 220;
             for (int index = firstIndex; index < lastIndex; index++) {
                 MacroDefinition macro = macros.get(index);
-                int y = 60 + (index - firstIndex) * 46;
+                int y = 60 + (index - firstIndex) * 30;
                 String shortcut = macro.keyCode < 0 ? "No key" : "Key: " + CommandMacrosClient.keyName(macro.keyCode);
-                graphics.text(this.font, crop(macro.name, 30), left + 188, y + 1, 0xFFFFFFFF, true);
-                graphics.text(this.font, crop(commandPreview(macro), 34), left + 188, y + 14, 0xFFBDBDBD, true);
-                graphics.text(this.font, shortcut, left + 188, y + 28, 0xFF72D6FF, true);
+                graphics.text(this.font, crop(macro.name, 30), left + 188, y, 0xFFFFFFFF, true);
+                graphics.text(this.font, crop(commandPreview(macro), 34), left + 188, y + 10, 0xFFBDBDBD, true);
+                graphics.text(this.font, shortcut, left + 188, y + 20, 0xFF72D6FF, true);
             }
         }
 

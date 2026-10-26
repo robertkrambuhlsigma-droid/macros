@@ -30,18 +30,22 @@ public final class MacroEditScreen extends Screen {
         if (editingMacro != null) shortcutKey = editingMacro.keyCode;
     }
 
+    private int bottomY() {
+        return this.height - 26;
+    }
+
     @Override
     protected void init() {
         int left = this.width / 2 - 180;
 
-        nameField = new EditBox(this.font, left, 65, 360, 20, Component.literal("Macro name"));
+        nameField = new EditBox(this.font, left, 54, 360, 20, Component.literal("Macro name"));
         nameField.setMaxLength(64);
         if (editingMacro != null && editingMacro.name != null) nameField.setValue(editingMacro.name);
         this.addRenderableWidget(nameField);
 
         commandFields.clear();
         for (int i = 0; i < COMMAND_FIELD_COUNT; i++) {
-            EditBox commandField = new EditBox(this.font, left, 111 + i * 30, 360, 20,
+            EditBox commandField = new EditBox(this.font, left, 92 + i * 22, 360, 20,
                     Component.literal("Command " + (i + 1)));
             commandField.setMaxLength(32500);
             if (editingMacro != null && editingMacro.commands != null && i < editingMacro.commands.size()) {
@@ -56,12 +60,12 @@ public final class MacroEditScreen extends Screen {
             waitingForShortcut = true;
             errorMessage = "Press a keyboard key now (Esc cancels).";
             shortcutButton.setMessage(Component.literal("Press a key..."));
-        }).bounds(left, 300, 174, 20).build());
+        }).bounds(left, 230, 174, 20).build());
 
         this.addRenderableWidget(Button.builder(Component.literal("Save"), button -> saveMacro())
-                .bounds(left + 195, 365, 75, 20).build());
+                .bounds(left + 195, bottomY(), 75, 20).build());
         this.addRenderableWidget(Button.builder(Component.literal("Cancel"), button -> returnToParent())
-                .bounds(left + 280, 365, 80, 20).build());
+                .bounds(left + 280, bottomY(), 80, 20).build());
     }
 
     private Component shortcutLabel() {
@@ -124,13 +128,11 @@ public final class MacroEditScreen extends Screen {
         int left = this.width / 2 - 180;
         graphics.text(this.font, editingMacro == null ? "Create Command Macro" : "Edit Command Macro",
                 left, 25, 0xFFFFFFFF, true);
-        graphics.text(this.font, "Name", left, 49, 0xFFBDBDBD, true);
-        graphics.text(this.font, "Commands run from top to bottom, one every few ticks. Slash is optional.",
-                left, 91, 0xFFBDBDBD, true);
-        graphics.text(this.font, "Shortcut keys should be unique. Macros only work while in a world.",
-                left, 327, 0xFFBDBDBD, true);
-        if (!errorMessage.isBlank()) {
-            graphics.text(this.font, errorMessage, left, 345, 0xFFFFD36A, true);
+        graphics.text(this.font, "Name", left, 42, 0xFFBDBDBD, true);
+        graphics.text(this.font, "Commands run top to bottom. Slash is optional.",
+                left, 78, 0xFFBDBDBD, true);
+                if (!errorMessage.isBlank()) {
+            graphics.text(this.font, errorMessage, left + 184, 232, 0xFFFFD36A, true);
         }
     }
 
