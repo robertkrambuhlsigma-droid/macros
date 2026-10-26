@@ -18,13 +18,17 @@ public final class MacroListScreen extends Screen {
         this.requestedPage = Math.max(0, page);
     }
 
+    private int bottomY() {
+        return this.height - 28;
+    }
+
     @Override
     protected void init() {
         int pageCount = Math.max(1, (CommandMacrosClient.MACROS.size() + PAGE_SIZE - 1) / PAGE_SIZE);
         page = Math.min(requestedPage, pageCount - 1);
 
         int left = this.width / 2 - 220;
-        int rowTop = 84;
+        int rowTop = 60;
         int firstIndex = page * PAGE_SIZE;
         int lastIndex = Math.min(firstIndex + PAGE_SIZE, CommandMacrosClient.MACROS.size());
 
@@ -49,18 +53,18 @@ public final class MacroListScreen extends Screen {
 
         this.addRenderableWidget(Button.builder(Component.literal("+ Add Macro"), button -> {
             this.minecraft.gui.setScreen(new MacroEditScreen(this, null));
-        }).bounds(left, 382, 95, 20).build());
+        }).bounds(left, bottomY(), 95, 20).build());
 
         this.addRenderableWidget(Button.builder(Component.literal("Previous"), button -> {
             this.minecraft.gui.setScreen(new MacroListScreen(Math.max(0, page - 1)));
-        }).bounds(left + 100, 382, 62, 20).build());
+        }).bounds(left + 100, bottomY(), 62, 20).build());
 
         this.addRenderableWidget(Button.builder(Component.literal("Next"), button -> {
             this.minecraft.gui.setScreen(new MacroListScreen(Math.min(pageCount - 1, page + 1)));
-        }).bounds(left + 167, 382, 52, 20).build());
+        }).bounds(left + 167, bottomY(), 52, 20).build());
 
         this.addRenderableWidget(Button.builder(Component.literal("Close"), button -> this.onClose())
-                .bounds(left + 345, 382, 75, 20).build());
+                .bounds(left + 345, bottomY(), 75, 20).build());
     }
 
     @Override
@@ -78,7 +82,7 @@ public final class MacroListScreen extends Screen {
             int left = this.width / 2 - 220;
             for (int index = firstIndex; index < lastIndex; index++) {
                 MacroDefinition macro = macros.get(index);
-                int y = 84 + (index - firstIndex) * 46;
+                int y = 60 + (index - firstIndex) * 46;
                 String shortcut = macro.keyCode < 0 ? "No key" : "Key: " + CommandMacrosClient.keyName(macro.keyCode);
                 graphics.text(this.font, crop(macro.name, 30), left + 188, y + 1, 0xFFFFFFFF, true);
                 graphics.text(this.font, crop(commandPreview(macro), 34), left + 188, y + 14, 0xFFBDBDBD, true);
@@ -87,7 +91,7 @@ public final class MacroListScreen extends Screen {
         }
 
         int count = Math.max(1, (macros.size() + PAGE_SIZE - 1) / PAGE_SIZE);
-        graphics.text(this.font, (page + 1) + " / " + count, this.width / 2 - 26, 388, 0xFFFFFFFF, true);
+        graphics.text(this.font, (page + 1) + " / " + count, this.width / 2 - 26, bottomY() + 6, 0xFFFFFFFF, true);
     }
 
     private static String commandPreview(MacroDefinition macro) {
