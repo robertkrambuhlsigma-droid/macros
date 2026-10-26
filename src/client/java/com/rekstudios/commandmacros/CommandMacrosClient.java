@@ -49,7 +49,7 @@ public final class CommandMacrosClient implements ClientModInitializer {
 
     private static void onClientTick(Minecraft client) {
         while (openMenuKey.consumeClick()) {
-            if (client.player != null && client.screen == null) {
+            if (client.player != null && client.gui.screen() == null) {
                 client.gui.setScreen(new MacroListScreen(0));
             }
         }
@@ -61,7 +61,7 @@ public final class CommandMacrosClient implements ClientModInitializer {
             return;
         }
 
-        if (client.screen == null) {
+        if (client.gui.screen() == null) {
             pollMacroShortcuts(client);
         }
 
@@ -78,7 +78,7 @@ public final class CommandMacrosClient implements ClientModInitializer {
     }
 
     private static void pollMacroShortcuts(Minecraft client) {
-        long windowHandle = client.getWindow().getWindow();
+        long windowHandle = client.getWindow().handle();
         for (MacroDefinition macro : MACROS) {
             if (macro.keyCode < 0) continue;
 
